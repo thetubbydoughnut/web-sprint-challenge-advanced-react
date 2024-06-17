@@ -18,8 +18,8 @@ export default function AppFunctional(props) {
   function getXY() {
     // It it not necessary to have a state to track the coordinates.
     // It's enough to know what index the "B" is at, to be able to calculate them.
-    const x = index % 3;
-    const y = Math.floor(index / 3)
+    const x = index % 3 + 1;
+    const y = Math.floor(index / 3) + 1;
     return { x, y }
   }
 
@@ -27,11 +27,8 @@ export default function AppFunctional(props) {
     // It it not necessary to have a state to track the "Coordinates (2, 2)" message for the user.
     // You can use the `getXY` helper above to obtain the coordinates, and then `getXYMessage`
     // returns the fully constructed string.
-    if (message !== initialMessage) {
       const { x, y } = getXY();
       return `Coordinates (${x}, ${y})`
-    }
-    return message;
   }
 
   function reset() {
@@ -47,19 +44,19 @@ export default function AppFunctional(props) {
     // of the "B" would be. If the move is impossible because we are at the edge of the grid,
     // this helper should return the current index unchanged.
     const { x, y } = getXY();
-    let newX = x;
-    let newY = y;
+    let newX = x - 1;
+    let newY = y - 1;
 
-    if(direction === 'left' && x > 0) {
-      newX = x - 1;
-    } else if (direction === 'right' && x < 2) {
-      newX = x + 1;
-    } else if (direction === 'up' && y > 0) {
-      newY = y - 1;
-    } else if (direction === 'down' && y < 2) {
-      newY = y + 1;
+    if(direction === 'left' && newX > 0) {
+      newX = newX - 1;
+    } else if (direction === 'right' && newX < 2) {
+      newX = newX + 1;
+    } else if (direction === 'up' && newY > 0) {
+      newY = newY - 1;
+    } else if (direction === 'down' && newY < 2) {
+      newY = newY + 1;
     }
-    return newY * 3 + newX
+    return newY * 3 + newX;
   }
 
   function move(evt) {
@@ -70,7 +67,7 @@ export default function AppFunctional(props) {
     if (newIndex !== index) {
       setIndex(newIndex);
       setSteps(steps + 1);
-      setMessage(`Coordinates (${getXY().x}, ${getXY().y})`);
+      setMessage('');
     }
     else {
       setMessage(`You can't go ${direction}`)
