@@ -1,4 +1,5 @@
 import React from 'react'
+import axios from 'axios'
 
 // Suggested initial states
 const initialMessage = ''
@@ -79,9 +80,31 @@ export default function AppFunctional(props) {
     setEmail(evt.target.value);
   }
 
-  function onSubmit(evt) {
+  async function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault()
+
+    const { x, y } = getXY();
+
+    const payload = {
+      x,
+      y,
+      steps,
+      email
+    };
+
+    try {
+      const response = await axios.post('http://localhost:9000/api/result', payload);
+
+      if (response.status === 200) {
+        setMessage(`${email} win `)
+      } else {
+        setMessage('Ouch: email is required')
+      }
+    }
+    catch (err) {
+      setMessage(`Error: ${err.message}`)
+    }
   }
 
   return (
@@ -111,7 +134,7 @@ export default function AppFunctional(props) {
       </div>
       <form>
         <input id="email" type="email" placeholder="type email"></input>
-        <input id="submit" type="submit"></input>
+        <input id="submit" type="submit" onSubmit={onSubmit}></input>
       </form>
     </div>
   )
