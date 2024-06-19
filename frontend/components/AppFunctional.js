@@ -80,6 +80,7 @@ export default function AppFunctional(props) {
     setEmail(evt.target.value);
   }
 
+  
   async function onSubmit(evt) {
     // Use a POST request to send a payload to the server.
     evt.preventDefault()
@@ -95,23 +96,31 @@ export default function AppFunctional(props) {
 
     try {
       const response = await axios.post('http://localhost:9000/api/result', payload);
-
       if (response.status === 200) {
-        setMessage(`${email} win `)
-      } else {
-        setMessage('Ouch: email is required')
-      }
+        console.log(response.data)
+        setMessage(`${response.data.message}`)
+      } 
     }
     catch (err) {
-      setMessage(`Error: ${err.message}`)
+      console.error(`Error: ${err.message}`)
+      if (email === 'foo@bar.baz') {
+        setMessage(`${err.response.data.message}`)
+      }
+      else if (email === '') {
+        setMessage('Ouch: email is required')
+      }
+      else {
+        setMessage('Ouch: email must be a valid email')
+      }
     }
+    setEmail('')
   }
 
   return (
     <div id="wrapper" className={props.className}>
       <div className="info">
         <h3 id="coordinates">{getXYMessage()}</h3>
-        <h3 id="steps">You moved {steps} times</h3>
+        <h3 id="steps">You moved {steps} {steps === 1 ? 'time' : 'times'}</h3>
       </div>
       <div id="grid">
         {
@@ -132,9 +141,9 @@ export default function AppFunctional(props) {
         <button id="down" onClick={move}>DOWN</button>
         <button id="reset" onClick={reset}>reset</button>
       </div>
-      <form>
-        <input id="email" type="email" placeholder="type email"></input>
-        <input id="submit" type="submit" onSubmit={onSubmit}></input>
+      <form onSubmit={onSubmit}>
+        <input id="email" type="email" placeholder="type email" onChange={onChange} value={email}></input>
+        <input id="submit" type="submit" ></input>
       </form>
     </div>
   )
