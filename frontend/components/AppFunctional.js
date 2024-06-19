@@ -135,11 +135,11 @@ export default function AppFunctional(props) {
         <h3 id="message">{message}</h3>
       </div>
       <div id="keypad">
-        <button id="left" onClick={move}>LEFT</button>
-        <button id="up" onClick={move}>UP</button>
-        <button id="right" onClick={move}>RIGHT</button>
-        <button id="down" onClick={move}>DOWN</button>
-        <button id="reset" onClick={reset}>reset</button>
+        <button data-testid='left' id="left" onClick={move}>LEFT</button>
+        <button data-testid='up' id="up" onClick={move}>UP</button>
+        <button data-testid='right' id="right" onClick={move}>RIGHT</button>
+        <button data-testid='down' id="down" onClick={move}>DOWN</button>
+        <button data-testid='reset' id="reset" onClick={reset}>reset</button>
       </div>
       <form onSubmit={onSubmit}>
         <input id="email" type="email" placeholder="type email" onChange={onChange} value={email}></input>
